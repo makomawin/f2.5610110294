@@ -8,11 +8,11 @@ import javax.swing.Timer;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class GameEngine implements KeyListener  {
+public class GameEngine implements KeyListener ,GameReporter {
 	GamePanel gp;
 	private SpaceShip v;	
 	private Timer timer;
-	
+	private long score = 0;
 	private ArrayList<Enemy> enemies = new ArrayList<Enemy>();
 		
 	public GameEngine(GamePanel gp, SpaceShip v) {
@@ -52,10 +52,10 @@ public class GameEngine implements KeyListener  {
 			if(!e1.isAlive()){
 				e_iter01.remove();
 				gp.sprites.remove(e1);
-				
+				score += 100;
 			}
 		}
-		gp.updateGameUI();
+		gp.updateGameUI(this);
 		
 		Rectangle2D.Double vr = v.getRectangle();
 		Rectangle2D.Double er01;
@@ -66,7 +66,11 @@ public class GameEngine implements KeyListener  {
 				return;
 			}
 		}
+		gp.updateGameUI(this);
 }
+	public long getScore(){
+ 		return score;
+ 	}
 	public void die(){
 		timer.stop();
 	}
